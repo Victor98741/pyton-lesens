@@ -16,6 +16,34 @@ FIRST_PLAYER = X
 
 
 class Board(Tk):
+    
+        
+   # def check_draw():
+        
+    
+    def check_win(self, board, player):
+        for y in range(3):
+            if board[y] == [player, player, player]:
+                return True
+        
+            
+        
+    
+    def update_board(self, x, y):
+        c_player = self.current_player
+        self.board[x][y] = c_player
+        print(self.board[x][y])
+        if self.check_win(self.board, c_player):
+            self.winner(c_player)
+        #elif self.check_draw(self.board):
+           # self.winner()
+    
+    def make_move(self, x, y):
+        position = {0 : 0, 1 : 200, 2 : 400}
+        current_player = self.current_player
+        
+        if self.board[x][y] == EMPTY:
+            self.update_board(x, y)
 
     def build_grid(self, grid_color):
             x = CANVAS_SIZE // RATIO
