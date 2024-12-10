@@ -1,3 +1,4 @@
+from queue import Empty
 from tkinter import *
 from turtle import width
 # tODO change import method, to from tkinter import module
@@ -15,28 +16,41 @@ O = 'player 2'
 FIRST_PLAYER = X
 
 
-class Board(Tk):
+class Board(Tk):    
     
+    def chenge_player(self):
+        if self.current_player == X:
+            self.current_player = O
+        else: self.current_player = X
         
-   # def check_draw():
-        
+
+    def check_draw(self, board):
+        for row in board:
+             if EMPTY in row:
+                 return False
+        return True
     
     def check_win(self, board, player):
         for y in range(3):
             if board[y] == [player, player, player]:
                 return True
-        
-            
-        
-    
+        for x in range(3):
+            if board[0][x] == board[1][x] == board[2][x] == player:
+                return True
+        if board[0][0] == board[1][1] == board[2][2] == player:
+            return True
+        if board[0][2] == board[1][1] == board[2][0] == player:
+            return True
+        return False
+                
     def update_board(self, x, y):
         c_player = self.current_player
         self.board[x][y] = c_player
         print(self.board[x][y])
         if self.check_win(self.board, c_player):
             self.winner(c_player)
-        #elif self.check_draw(self.board):
-           # self.winner()
+        else: self.check_draw(self.board)
+           
     
     def make_move(self, x, y):
         position = {0 : 0, 1 : 200, 2 : 400}
@@ -44,6 +58,12 @@ class Board(Tk):
         
         if self.board[x][y] == EMPTY:
             self.update_board(x, y)
+            self.chenge_player()
+            
+        if current_player == X :
+            self.render_cross(position[x], position[y])
+        elif current_player == O :
+            self.render_circle(position[x], position[y])
 
     def build_grid(self, grid_color):
             x = CANVAS_SIZE // RATIO
@@ -95,7 +115,6 @@ class Board(Tk):
         
 game_v1 = Board(start_player = FIRST_PLAYER)
 game_v1.build_grid('blue')
-game_v1.winner()
 
 game_v1.mainloop()
 
