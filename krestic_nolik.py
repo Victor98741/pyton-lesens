@@ -17,10 +17,6 @@ FIRST_PLAYER = X
 
 
 class Board(Tk):    
-
-    def print_draw():
-        if self.check_draw:
-            print ('Draw')
     
     def chenge_player(self):
         if self.current_player == X:
@@ -53,9 +49,12 @@ class Board(Tk):
         print(self.board[x][y])
         if self.check_win(self.board, c_player):
             self.winner(c_player)
-        elif: self.check_draw(self, board):
-            print("Draw")
-        else: self.check_draw(self.board)
+        if self.check_draw(self.board):
+            self.winner(player = None)
+        
+        
+            
+            
            
     
     def make_move(self, x, y):
@@ -67,10 +66,10 @@ class Board(Tk):
             self.chenge_player()
             
         if current_player == X :
-            self.render_cross(position[x], position[y])
+             self.render_cross(position[x], position[y])
         elif current_player == O :
             self.render_circle(position[x], position[y])
-
+        print(self.board)
     def build_grid(self, grid_color):
             x = CANVAS_SIZE // RATIO
             y1 = 0
@@ -80,7 +79,7 @@ class Board(Tk):
                 self.canvas.create_line(y1, x, y2, x, fill=grid_color)
                 x += CANVAS_SIZE//RATIO
 
-    def render_cross(self, posX, posY, cross_color):
+    def render_cross(self, posX, posY, cross_color = 'red'):
         x = posX
         y = posY
         y1 = FIGURE_SIZE
@@ -100,11 +99,8 @@ class Board(Tk):
         else:
             text = 'Draw'
         self.canvas.create_text(center, center, text = text, fill = 'white', font = 'Arial 50')
+        self.canvas.unbind('<Button-1>')
 
-    def print_draw():
-        if self.check_draw:
-            print ('Draw')
-    
     def click_event(self, event):
         x_coord = event.x // FIGURE_SIZE
         y_coord = event.y // FIGURE_SIZE
