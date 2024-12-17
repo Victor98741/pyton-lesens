@@ -17,6 +17,10 @@ FIRST_PLAYER = X
 
 
 class Board(Tk):    
+
+    def print_draw():
+        if self.check_draw:
+            print ('Draw')
     
     def chenge_player(self):
         if self.current_player == X:
@@ -49,6 +53,8 @@ class Board(Tk):
         print(self.board[x][y])
         if self.check_win(self.board, c_player):
             self.winner(c_player)
+        elif: self.check_draw(self, board):
+            print("Draw")
         else: self.check_draw(self.board)
            
     
@@ -95,6 +101,10 @@ class Board(Tk):
             text = 'Draw'
         self.canvas.create_text(center, center, text = text, fill = 'white', font = 'Arial 50')
 
+    def print_draw():
+        if self.check_draw:
+            print ('Draw')
+    
     def click_event(self, event):
         x_coord = event.x // FIGURE_SIZE
         y_coord = event.y // FIGURE_SIZE
