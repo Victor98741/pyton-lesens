@@ -1,14 +1,15 @@
 
 
 def is_palindrome(s):
-    tmp = s
-    tmp.reverse
-    print(s)
+    tmp = s[:]
+    tmp.reverse()
+    print(s, 'input list')
+    print(tmp, 'reversed list')
     
     if tmp == s:
         return True
     else:
-        return False
+        return 
     
     
     
@@ -23,4 +24,4 @@ def word(n):
     else:
         print(f'{result} - not a palindrome')
     
-
+word(3)
