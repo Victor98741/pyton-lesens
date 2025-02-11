@@ -119,6 +119,39 @@ class Board(Tk):
                       [EMPTY, EMPTY, EMPTY],
                       [EMPTY, EMPTY, EMPTY]]
         
+    def minimax(self, board, isMax):
+        """Monimax https://en.wikipedia.org/wiki/Minimax"""
+        board_len = range(len(self.board))
+        
+        if self.check_win(board, O):
+            return 1
+        elif self.check_win(board, X):
+            return -1
+        elif self.check_win(board):
+            return 0
+        
+        if isMax:
+            best_score = float('-inf')
+            for i in board_len:
+                for j in board_len:
+                    if board[i][j] == EMPTY:
+                        board[i][j] = O
+                        score = self.minimax(board, False)
+                        board[i][j] = EMPTY
+                        best_score = max(score, best_score)
+        else:
+            best_score = float('inf')
+            for i in board_len:
+                for j in board_len:
+                    if board[i][j] == EMPTY:
+                        board[i][j] = X
+                        score = self.minimax(board, True)
+                        board[i][j] = EMPTY
+                        best_score = min(score, best_score)
+        return best_score
+                        
+                    
+        
 game_v1 = Board(start_player = FIRST_PLAYER)
 game_v1.build_grid('blue')
 
