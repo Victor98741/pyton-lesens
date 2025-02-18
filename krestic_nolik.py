@@ -1,6 +1,6 @@
 from queue import Empty
 from tkinter import *
-from turtle import width
+from turtle import heading, width
 # tODO change import method, to from tkinter import module
 
 # Constants
@@ -52,10 +52,6 @@ class Board(Tk):
         if self.check_draw(self.board):
             self.winner(player = None)
         
-        
-            
-            
-           
     
     def make_move(self, x, y):
         position = {0 : 0, 1 : 200, 2 : 400}
@@ -70,6 +66,8 @@ class Board(Tk):
         elif current_player == O :
             self.render_circle(position[x], position[y])
         print(self.board)
+        
+        
     def build_grid(self, grid_color):
             x = CANVAS_SIZE // RATIO
             y1 = 0
@@ -93,6 +91,7 @@ class Board(Tk):
         self.canvas.create_oval(posX + 5, posY + 5, posX + f_size, posY + f_size, outline = 'blue', width = 5)
         
     def winner(self, player = None):
+        self.game_status = False
         center = CANVAS_SIZE // 2
         if player:
             text = f'Winner: {player}'
@@ -105,19 +104,38 @@ class Board(Tk):
         x_coord = event.x // FIGURE_SIZE
         y_coord = event.y // FIGURE_SIZE
         self.make_move(x_coord, y_coord)
+        
+        if self.game_status:
+            self.ai_best_move()
     
     def __init__(self, start_player):
         super().__init__()
-        
-        
-        self.canvas = Canvas(height = CANVAS_SIZE, width = CANVAS_SIZE, bg = BG_COLOR)
+        self.canvas = Canvas(height=CANVAS_SIZE, width=CANVAS_SIZE, bg = BG_COLOR)
         self.canvas.pack()
         self.figure_size = FIGURE_SIZE
         self.current_player = start_player
         self.canvas.bind('<Button-1>', self.click_event)
-        self.board = [[EMPTY, EMPTY, EMPTY],
-                      [EMPTY, EMPTY, EMPTY],
-                      [EMPTY, EMPTY, EMPTY]]
+        self.board = [
+            [EMPTY, EMPTY, EMPTY],
+            [EMPTY, EMPTY, EMPTY],
+            [EMPTY, EMPTY, EMPTY]]
+        self.game_status = True
+        
+    def ai_best_move(self):
+        best_score = float("-inf")
+        board_len = range(len(self.board))
+        board = self.board[:]    
+        for i in board_len:
+            for j in board_len:
+                if board[i][j]==EMPTY:
+                    board[i][j] = O
+                    score = self.minimax(board, False)
+                    board[i][j] = EMPTY
+                    if score > best_score:
+                        best_score = score
+                        move = i, j
+        self.make_move(move[0], move[1])   
+        
         
     def minimax(self, board, isMax):
         """Monimax https://en.wikipedia.org/wiki/Minimax"""
@@ -127,7 +145,7 @@ class Board(Tk):
             return 1
         elif self.check_win(board, X):
             return -1
-        elif self.check_win(board):
+        elif self.check_draw(board):
             return 0
         
         if isMax:
