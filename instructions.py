@@ -179,4 +179,83 @@ reduced_list = reduce(lambda x, y: x + y, my_list)
 print(reduced_list)
 
 only_evens = [i ** 2 for i in range(10) if i ** 2 % 2 == 0]
-print(only_evens)     
+print(only_evens)
+
+def my_func(a, b, c):
+    print(a, b, c)
+    
+my_func('Hello', 'World', '!!!')
+
+my_func(a='first', b='second', c='third')
+my_func(b='second', c='second', a='first')
+
+my_func('first', b='second', c='third')     
+
+def my_func(a, b, *args, **kwargs):
+    print(a, b)
+    print(args)
+    print(kwargs)
+    
+my_func(1, 2, 3, 4, 5, foo = 6, bar = 7)
+
+def my_func(a, b, c):
+    print(a, b, c)
+    
+some_dict = {'a': 1, 'b': 2, 'c': 3}
+my_func(**some_dict)
+
+def decorator(func):
+    def wrapper():
+        print('Before')
+        func()
+        print('After')
+    return wrapper
+
+@decorator
+def print_name():
+    print('Mike')
+
+print_name()
+
+def square_decorator(func):
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        return result * result
+    return wrapper
+
+@square_decorator
+def add_some(x):
+    return x + 5
+
+print(add_some(10))
+
+def repeater (times):
+    def decorator_repeat(func):
+        def wrapper(*args, **kwargs):
+            for _ in range(times):
+                result = func(*args, **kwargs)
+            return result
+        return wrapper
+    return decorator_repeat
+
+@repeater(times=3)
+def say_hello():
+    print('Hello, world!')
+    
+say_hello()
+
+def check_permission(func):
+    def wrapper(*args, **kwargs):
+        arguments = args[0]
+        user = args[1]
+        if user == 'admin':
+            return func(arguments, user)
+        else:
+            return 'Denied'
+    return wrapper
+
+@check_permission
+def extraordinary_function(argument, user):
+    return argument + 10 if user else argument - 10
+user = 'admin'
+print(extraordinary_function(15, user))
