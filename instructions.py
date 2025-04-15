@@ -204,6 +204,7 @@ def my_func(a, b, c):
 some_dict = {'a': 1, 'b': 2, 'c': 3}
 my_func(**some_dict)
 
+
 def decorator(func):
     def wrapper():
         print('Before')
@@ -259,3 +260,15 @@ def extraordinary_function(argument, user):
     return argument + 10 if user else argument - 10
 user = 'admin'
 print(extraordinary_function(15, user))
+
+from collections import Counter # можно изучить print(dir(Counter))
+
+my_string = 'aaaabbccccbbbb'
+
+my_counter = Counter(my_string)
+print(my_counter)
+
+
+my_list = ['a', 'b', 'c']
+for i in enumerate(my_list):
+    print(i[0],i[1])
